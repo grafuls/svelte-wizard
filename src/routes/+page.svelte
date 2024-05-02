@@ -2,11 +2,35 @@
 
 <script>
 	import { Stepper, Step } from '@skeletonlabs/skeleton';
-	import { RadioGroup, RadioItem } from '@skeletonlabs/skeleton';
-	import { BsCheck, BsHddNetwork, BsPhone, BsHouses } from 'svelte-icons-pack/bs';
+	import { BsHddNetwork, BsPhone, BsHouses } from 'svelte-icons-pack/bs';
     import { Icon } from 'svelte-icons-pack';
-	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
+	import Step1 from './Step1.svelte';
+    import Step2 from './Step2.svelte';
+    import Step3 from './Step3.svelte';
+    import Step4 from './Step4.svelte';
+    import Step5 from './Step5.svelte';
+
+	/**
+     * @type {number}
+     */
 	let group = 0;
+
+	/**
+     * @type {string[]}
+     */
+	let valueMultiple = [];
+
+		
+	const clientes = [{
+		value: 0,
+		label: 'Particular',
+	}, {
+		value: 1,
+		label: 'Empresa',
+	}, {
+		value: 2,
+		label: 'Autónomo',
+	}]
 
 	const fibras = [{
 		value: 1,
@@ -49,14 +73,6 @@
 		centralita: {name: 'Centralita Virtual', selected: false, values: centrales, icon: BsHouses, selectedValue: 1}
 	};
 
-	let valueMultiple = [];
-
-
-	function toggle(flavor) {
-		servicios[flavor].selected = !servicios[flavor].selected;
-	}
-
-
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
@@ -65,59 +81,23 @@
 			<Stepper stepTerm="Paso" buttonBackLabel="← Atras" buttonNextLabel="Siguiente →" buttonCompleteLabel="Confirmar">
 				<Step>
 					<svelte:fragment slot="header">Qué tipo de cliente eres?</svelte:fragment>
-	
-					<RadioGroup rounded="rounded-container-token" flexDirection="flex-col">
-						<RadioItem bind:group={group} name="justify" value={0}>Particular</RadioItem>
-						<RadioItem bind:group={group} name="justify" value={1}>Empresa</RadioItem>
-						<RadioItem bind:group={group} name="justify" value={2}>Autónomo</RadioItem>
-					</RadioGroup>
-	
+					<Step1 bind:group={group} clientes={clientes}></Step1>
 				</Step>
 				<Step>
 					<svelte:fragment slot="header">En qué servicios estás interesado?</svelte:fragment>
-					
-					<!-- {#each Object.keys(servicios) as f}
-					<div class="flex justify-center space-x-2">
-						<button
-							class="chip {servicios[f] ? 'variant-filled' : 'variant-soft'}"
-							on:click={() => { toggle(f); }}
-							on:keypress
-						>
-							{#if servicios[f]}<span><Icon src={BsCheck} /></span>{/if}
-							<span class="capitalize">{f}</span>
-						</button>
-					</div>
-					{/each} -->
-
-					<ListBox multiple>
-					{#each Object.keys(servicios) as f}
-					{#if group === 0 && f === 'centralita'}
-					<span></span>
-					{:else}
-						<ListBoxItem bind:group={valueMultiple} name="medium" value={f}>{servicios[f].name}</ListBoxItem>
-					{/if}
-					{/each}
-					</ListBox>
-
+					<Step2 bind:valueMultiple={valueMultiple} servicios={servicios} group={group}></Step2>
 				</Step>
 				<Step>
 					<svelte:fragment slot="header">Qué uso tienes?</svelte:fragment>
-					{#each valueMultiple as f}
-					<div class="flex justify-center space-x-2">
-						<span>{servicios[f].name}</span>
-						<RadioGroup>
-							{#each servicios[f].values as v}
-							<RadioItem bind:group={servicios[f].selectedValue} name={f} value={v.value}>{v.label}</RadioItem>
-							{/each}
-						</RadioGroup>
-					</div>
-					{/each}
+					<Step3 bind:group={group} valueMultiple={valueMultiple} bind:servicios={servicios}></Step3>
 				</Step>
 				<Step>
 					<svelte:fragment slot="header">Resumen</svelte:fragment>
+					<Step4 bind:group={group} cliente={clientes[group].label} valueMultiple={valueMultiple} servicios={servicios}></Step4>
 				</Step>
 				<Step>
 					<svelte:fragment slot="header">Contacto</svelte:fragment>
+					<Step5></Step5>
 				</Step>
 
 			</Stepper>
@@ -126,18 +106,6 @@
 </div>
 
 <style lang="postcss">
-	figure {
-		@apply flex relative flex-col;
-	}
-	figure svg,
-	.img-bg {
-		@apply w-64 h-64 md:w-80 md:h-80;
-	}
-	.img-bg {
-		@apply absolute z-[-1] rounded-full blur-[50px] transition-all;
-		animation: pulse 5s cubic-bezier(0, 0, 0, 0.5) infinite,
-			glow 5s linear infinite;
-	}
 	@keyframes glow {
 		0% {
 			@apply bg-primary-400/50;
