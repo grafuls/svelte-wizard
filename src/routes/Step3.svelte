@@ -22,8 +22,8 @@
 {#if group === 0 && f === 'centralita'}
 <span></span>
 {:else}
-<div class="flex justify-center space-x-2">
-    <span>{servicios[f].name}</span>
+<div class="justify-center space-x-2">
+    <h2>{servicios[f].name}</h2>
     <RadioGroup>
     {#each servicios[f].values as v}
         <RadioItem bind:group={servicios[f].selectedValue} name={f} value={v.value}>{v.label}</RadioItem>

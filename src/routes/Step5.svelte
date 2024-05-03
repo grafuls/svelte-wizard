@@ -15,7 +15,7 @@
 </label>
 <label class="label">
     <span>Email</span>
-    <input class="input variant-form-material" bind:value={formData.email} type="text">
+    <input class="input variant-form-material" bind:value={formData.email} type="email">
 </label>
 <label class="label">
     <span>Compañia actual</span>

@@ -1,6 +1,7 @@
 
 <script>
     import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
+    import { Icon } from 'svelte-icons-pack';
 
     /**
      * @type {number}
@@ -23,7 +24,10 @@
         {#if group === 0 && f === 'centralita'}
         <span></span>
         {:else}
-            <ListBoxItem bind:group={valueMultiple} name="medium" value={f}>{servicios[f].name}</ListBoxItem>
+            <ListBoxItem regionDefault="text-left" bind:group={valueMultiple} name="medium" value={f}>
+                <svelte:fragment slot="lead"><Icon src={servicios[f].icon} /></svelte:fragment>
+                {servicios[f].name}
+            </ListBoxItem>
         {/if}
     {/each}
 </ListBox>

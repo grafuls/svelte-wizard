@@ -76,9 +76,9 @@
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
-	<div class="space-y-10 text-center flex flex-col items-center">
-		<div class="flex justify-center space-x-2">
-			<Stepper stepTerm="Paso" buttonBackLabel="← Atras" buttonNextLabel="Siguiente →" buttonCompleteLabel="Confirmar">
+	<div class="space-y-8 text-center">
+		<div class="justify-center">
+			<Stepper regionContent="space-y-8" stepTerm="Paso" buttonBackLabel="← Atras" buttonNextLabel="Siguiente →" buttonCompleteLabel="Confirmar">
 				<Step>
 					<svelte:fragment slot="header">Qué tipo de cliente eres?</svelte:fragment>
 					<Step1 bind:group={group} clientes={clientes}></Step1>
